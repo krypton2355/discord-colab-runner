@@ -1,30 +1,36 @@
 import asyncio
 from playwright.async_api import async_playwright
 
-# Replace this with your actual Colab notebook URL
 COLAB_URL = "https://colab.research.google.com/github/krypton2355/discord-colab-runner/blob/main/DiscoToken.ipynb"
 
 async def main():
     print("🟢 Launching browser...")
-
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True, args=["--no-sandbox"])
         context = await browser.new_context()
         page = await context.new_page()
 
-        print("🌐 Opening Colab...")
-        await page.goto(COLAB_URL, timeout=60000)
+        print("🌐 Opening Colab notebook...")
+        await page.goto(COLAB_URL, timeout=90000)
+        await page.wait_for_timeout(8000)
 
-        # Wait for the 'Run all' button
-        print("🔍 Waiting for 'Run all' button...")
-        await page.wait_for_selector('text="Run all"', timeout=60000)
-        await page.click('text="Run all"')
-        print("▶️ Running notebook...")
+        print("▶️ Step 1: Pressing Ctrl+F9 (Run all)")
+        await page.keyboard.press('Control+F9')
+        await page.wait_for_timeout(3000)
 
-        # Wait for some time to let the notebook execute
-        await page.wait_for_timeout(120000)  # wait 2 minutes
+        print("🔁 Step 2: Tabbing to 'Run anyway'")
+        await page.keyboard.press('Tab')
+        await page.keyboard.press('Tab')
+        await page.keyboard.press('Tab')
+        await page.wait_for_timeout(1000)
+
+        print("⏎ Step 3: Pressing Enter to confirm")
+        await page.keyboard.press('Enter')
+
+        print("⏳ Waiting 2 mins for execution to finish...")
+        await page.wait_for_timeout(120000)
 
         await browser.close()
-        print("✅ Finished.")
+        print("✅ Notebook execution complete.")
 
 asyncio.run(main())
