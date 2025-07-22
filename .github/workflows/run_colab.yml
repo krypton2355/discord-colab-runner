@@ -1,0 +1,30 @@
+name: Auto Run Colab Every 5 Hours
+
+on:
+  schedule:
+    - cron: '0 */5 * * *'  # Runs every 5 hours
+  workflow_dispatch:
+
+jobs:
+  run-colab:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.10
+
+    - name: Install Chrome & Playwright
+      run: |
+        sudo apt update
+        sudo apt install -y chromium-browser xvfb python3-pip
+        pip install playwright nest_asyncio
+        playwright install chromium
+
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Run Colab Notebook Using Playwright
+      run: |
+        python run_colab.py
