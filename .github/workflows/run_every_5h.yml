@@ -10,20 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
-
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.10
-
-    - name: Install deps
-      run: |
-        sudo apt update
-        sudo apt install -y xvfb
-        pip install requests playwright
-        playwright install chromium
-
-    - name: Run extract & send
-      run: python get_token_and_send.py
+      - name: Checkout repo
+        uses: actions/checkout@v3
+  
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+  
+      - name: Install deps
+        run: |
+          sudo apt update
+          sudo apt install -y xvfb
+          pip install requests playwright
+          playwright install chromium
+  
+      - name: Run extract & send
+        run: python get_token_and_send.py
