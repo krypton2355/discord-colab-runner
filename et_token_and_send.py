@@ -5,7 +5,7 @@ import requests
 from playwright.async_api import async_playwright
 
 DISCORD_URL = "https://discord.com/channels/@me"
-BACKEND_TOKEN_POST_URL = "http://<YOUR_BACKEND_DOMAIN>/token"  # Change this to Render or localhost
+BACKEND_TOKEN_POST_URL = "http://127.0.0.1:8000/"  # Change this to Render or localhost
 PROFILE_DIR = "./discord_profile"  # must be zipped & uploaded in repo
 
 async def extract_token():
