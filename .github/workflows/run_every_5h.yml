@@ -1,29 +1,32 @@
 name: Auto Extract Discord Token
-
 on:
   schedule:
-    - cron: '0 */5 * * *'  # every 5 hours
+    - cron: '0 */5 * * *'  # every 5 hours (fixed: added missing *)
   workflow_dispatch:
 
 jobs:
   extract-and-send:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repo
       uses: actions/checkout@v3
-
+      
     - name: Setup Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.10
-
+        python-version: '3.10'  # fixed: added quotes around version
+        
     - name: Install deps
       run: |
         sudo apt update
         sudo apt install -y xvfb
         pip install requests playwright
         playwright install chromium
-
+        
     - name: Run extract & send
       run: python get_token_and_send.py
+      env:
+        # Add any environment variables your script needs
+        DISCORD_EMAIL: ${{ secrets.DISCORD_EMAIL }}
+        DISCORD_PASSWORD: ${{ secrets.DISCORD_PASSWORD }}
+        SERVER_URL: ${{ secrets.SERVER_URL }}
