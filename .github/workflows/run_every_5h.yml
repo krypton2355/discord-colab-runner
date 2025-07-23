@@ -24,9 +24,7 @@ jobs:
         playwright install chromium
         
     - name: Run extract & send
-      run: python get_token_and_send.py
+      run: xvfb-run -a python get_token_and_send.py
       env:
-        # Add any environment variables your script needs
-        DISCORD_EMAIL: ${{ secrets.DISCORD_EMAIL }}
-        DISCORD_PASSWORD: ${{ secrets.DISCORD_PASSWORD }}
+        # Add your server URL as a GitHub secret
         SERVER_URL: ${{ secrets.SERVER_URL }}
